@@ -1,0 +1,21 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+}
+
+/* fonts  */
+
+@font-face {
+    font-family: impact;
+    src: url(../fonts/impact/impact.ttf);
+}
+
+/* meme editor  */
+
+.border-box{
+    border: 1px cornsilk solid
+}
+

@@ -10,13 +10,43 @@
 </head>
 
 <body onload="onInit()">
-    
-    <input type="text" >
-
-    <a href="#" class="btn font-family" onclick="downloadImg(this)" download="my-img.jpg">Download</a>
-    <div class="canvas-container">
-        <canvas width="700" height="700" style="outline:1px solid #BFAB49" onclick="onDraw(event)"></canvas>
+    <div class="gallary-container">
+        <img src="img/1.jpg" onclick="onSelecImg(1)">
+        <img src="img/2.jpg" onclick="onSelecImg(2)">
+        <!-- <img src="img/3.jpg" onclick="onSelecImg(3)"> -->
+        <!-- <img src="img/4.jpg" onclick="onSelecImg()">
+        <img src="img/5.jpg" onclick="onSelecImg()">
+        <img src="img/6.jpg" onclick="onSelecImg()"> -->
     </div>
-</body>
+    <div class="meme-contaier">
+        <div class="canvas-container">
+            <canvas class="canvas" oninput="onDraw(event)"></canvas>
+        </div>
+        <label for="text-line">Text here</label>
+        <input class="txt" type="text" name="text-line" placeholder="text here" oninput="onDrawTxt(this.value)">
+        <input type="color" value ="#000000" name="font-color" onchange="onChangeColor()">
+        <button class="font-size" onclick="onChangeFontSize(4)">A+</button>
+        <button class="font-size" onclick="onChangeFontSize(-4)">A-</button>
+        <button class="start-alignment" name="start" onclick="onChangeAlign(this)" >left</button>
+        <button class="center-alignment" name="center" onclick="onChangeAlign(this)">center</button>
+        <button class="end-alignment" name="end" onclick="onChangeAlign(this)">right</button>
+        <button class="move-line" onclick="OnMoveLine(-3)">&#8593</button>
+        <button class="move-line" onclick="OnMoveLine(3)">&#8595</button>
+        <button class="add-line" onclick="onAddLine()"> + </button>
+        <button class="switch-line" onclick="onSwitchLine()"></button>
+        <select name="font-family" onchange="onChangeFont(this.value)">
+            <option value="impact">impact</option>
+            <option value="halvatica">halvatica</option>
+        </select>
+        <a href="#" class="btn" onclick="downloadImg(this)" download="my-img.jpg">Download</a>
+    </div>
 
+    <!-- <div class="border-box"></div> -->
+    <!-- <script src="js/util.js"></script> -->
+    <script src="js/meme-service.js"></script>
+    <script src="js/meme-controler.js"></script>
+    <script src="js/gallary-service.js"></script>
+    <script src="js/gallary-contorler.js"></script>
+
+</body>
 </html>
