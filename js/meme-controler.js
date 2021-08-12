@@ -20,7 +20,6 @@ function onInitCanvas() {
     renderCanvas();
 }
 
-
 /******************************render************************************/
 function renderImg(img) {
     cleanTxt();
@@ -204,6 +203,7 @@ function onSaveMeme() {
 
 function onUloadImgFromStorage() {
 
+    if(!gSaveMemes || gSaveMemes.length === 0)return;
     gSavesMemes.forEach((meme) => {
         var meme = new Image();        
         meme.src = uploadImgFromStorage();
