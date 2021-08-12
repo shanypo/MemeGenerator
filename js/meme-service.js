@@ -3,10 +3,9 @@
 // var gKeyWords;
 // var gImgs;
 var gMeme;
-
+const KEY = 'memeDB';
+var gSaveMemes = [];
 // createMeme();
-var gKeyWords = { 'happy': 3, 'you can': 2 };
-var gImgs = [{ id: 1, url: 'img/1.jpg', keywors: ['funny'] }, { id: 2, url: 'img/2.jpg', keywors: ['funny'] }];
 
 function createMemes(pos) {
     var gMeme = {
@@ -22,70 +21,60 @@ function createMemes(pos) {
                 isDrag: false,
                 font: 'impact'
             }
-        ]
+        ],
     }
     return gMeme;
 }
+
+/***************************get*************************************/
 
 function findImg() {
     return gImgs.url;
 }
 
 function getTxt() {
-    return gMeme.lines[0].txt;
+    return gMeme.lines[gMeme.selectedLineIdx].txt;
 }
 
 function getMeme() {
     return gMeme;
 }
 
-function changeColor(fontColor) {
-    gMeme.lines[0].color = fontColor;
+function getColor() {
+    return gMeme.lines[gMeme.selectedLineIdx].color;
 }
 
-function getColor() {
-    return gMeme.lines[0].color;
+function getLine(idx = gMeme.selectedLineIdx) {
+    return gMeme.lines[idx];
+}
+
+function getParam(param) {
+    return gMeme.lines[gMeme.selectedLineIdx][param];
+}
+/***************************change*************************************/
+function changeParam(param, newValue) {
+    gMeme.lines[gMeme.selectedLineIdx][param] = newValue;
+
 }
 
 function changeFontSize(diff) {
-    gMeme.lines[0].size += diff;
+    if (gMeme.lines[gMeme.selectedLineIdx].size < 24 || gMeme.lines[gMeme.selectedLineIdx].size > 90) return;
+    gMeme.lines[gMeme.selectedLineIdx].size += diff;
 }
 
-function getFontSize() {
-    return gMeme.lines[0].size;
-}
-
-function changeAlignment(alignment) {
-    gMeme.lines[0].align = alignment.name;
-}
-
-function getAlign() {
-    return gMeme.lines[0].align;
-}
+/***************************lines*************************************/
 
 function setLineDrag(isDrag) {
-    gMeme.lines[0].isDrag = isDrag
-}
-
-function getLine(lineNum) {
-    return gMeme.lines[lineNum];
+    gMeme.lines[gMeme.selectedLineIdx].isDrag = isDrag
 }
 
 function moveLine(dx, dy) {
-    gMeme.lines[0].pos.x += dx;
-    gMeme.lines[0].pos.y += dy;
-}
-
-function changeFont(fontFamily) {
-    gMeme.lines[0].font = fontFamily;
-}
-
-function getFont() {
-    return gMeme.lines[0].font;
+    gMeme.lines[gMeme.selectedLineIdx].pos.x += dx;
+    gMeme.lines[gMeme.selectedLineIdx].pos.y += dy;
 }
 
 function isline(clickedPos, txtWidth) {
-    const { pos } = gMeme.lines[0];
+    const { pos } = gMeme.lines[gMeme.selectedLineIdx];
     const distance = Math.sqrt((pos.x - clickedPos.x) + (pos.y - clickedPos.y))
     return distance <= txtWidth;
 }
@@ -100,5 +89,34 @@ function addLine(pos) {
         isDrag: false,
         font: 'impact'
     });
-    return gMeme.lines[1];
+    return gMeme.lines[gMeme.selectedLineIdx];
 }
+
+function updateLine() {
+    return gMeme.selectedLineIdx >= gMeme.lines.length - 1 ? gMeme.selectedLineIdx = 0 : gMeme.selectedLineIdx++;
+
+}
+
+function deleteLine() {
+    gMeme.lines.splice(gMeme.selectedLineIdx, 1);
+    gMeme.selectedLineIdx--;
+}
+
+/*************************save meme*********************************************/
+function saveMeme(){
+    // saveToStorage(KEY, gMeme);
+
+}
+
+function uploadImgFromStorage(){
+    return loadFromStorage(KEY);
+}
+
+function saveMeme() {
+    gSaveMemes.push(gMeme);
+    localStorage.setItem(KEY, gCanvas.toDataURL(gSaveMemes, 'image/jpeg'));
+    return gSaveMemes;
+}
+
+
+
