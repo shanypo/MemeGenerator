@@ -161,7 +161,7 @@ body.open-menu .screen {
     padding-top: 46px;
     padding-bottom: 46px;
     grid-template-columns: repeat(auto-fit, minmax(150px, 150px));
-    gap: 27px;
+    gap: 10px;
     margin: 0 15px;
 }
 
@@ -270,6 +270,7 @@ canvas{
     color: white;
     border-radius: 3px;
     cursor: pointer;
+    transform: translate(-57px, 4px);
 }
 
 /* buttons  */
@@ -596,6 +597,7 @@ canvas{
         margin-left: 16px;
     }
 
+    
 }
 
 @media screen and (min-width: 980px) {
@@ -605,12 +607,12 @@ canvas{
     .main-layout{
         max-width: 1250px;
     }
-
+    
     canvas{
         height: 500px;
         width: 500px;
     }
-
+    
     .gallary-container .main-container, memes-page{
         grid-template-columns: repeat(auto-fit, minmax(171px, 200px));
     }
@@ -618,25 +620,25 @@ canvas{
         height: 171px;
         width: 200px;
     }
-
+    
     .uplaod-img{
         height: 171px;
         width: 200px;
     }
-
+    
     .buttons-container{
         width: 500px;
         height: 500px;
         gap: 32px 8px;
-    padding: 27px 13px;
-
+        padding: 27px 13px;
+        
     }
     .buttons-container .txt{
         width: 27.81rem;
         height: 3.56rem;
         font-size: 1.56rem;
     }
-
+    
     .stroke{
         margin-left: unset;
     }
@@ -661,12 +663,12 @@ canvas{
         height: 53px;
         grid-column: 6;
     }
-
+    
     .center-buttons{
         width: 56px;
         height: 51px;
     }
-   
+    
     .buttons-container .font-family{
         grid-row: 4;
         grid-column: 2/4;
@@ -675,8 +677,8 @@ canvas{
         padding-left: 0.93rem;
         margin-left: 49px;
     }
-
-
+    
+    
     .buttons-container .stickers{
         /* display: none; */
         grid-row: 5; 
@@ -688,7 +690,7 @@ canvas{
         grid-row:5;
         margin-left: 16px;
     }
-
+    
     .save{
         width: 130px;
         height: 2.1rem;
@@ -708,5 +710,8 @@ canvas{
     .uplaod-img{
         font-size: 2.2rem;
     }
-   
+    
+    .delete-btn{
+        transform: unset;
+    }
 }
