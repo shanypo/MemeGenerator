@@ -19,23 +19,17 @@
                 <a href="#" name="memes" onclick="onSwitchPage(this.name)">Memes</a>
                 <a href="#" name="about" onclick="onSwitchPage(this.name)">About</a>
             </nav>
-            <button class="toggle-menu-btn" onclick="onToggleMenu()"><img src="buttons-img/PngItem_6342297.png"></button>
+            <button class="toggle-menu-btn" onclick="onToggleMenu()"><img
+                    src="buttons-img/PngItem_6342297.png"></button>
         </div>
     </header>
     <div class="gallary-container main-layout">
-        <!-- <div class="search-container">
-            <input class="search" type="text" name="search" placeholder="Search">
-            <button type="submit" onclick="onSearch()"><img src="buttons-img/Forme_9.png"></button>
+        <div class="search-container">
+            <input class="search" type="text" name="search" placeholder="Search" onkeyup="onSearch(this.value)">
             <div class="keyword-search"></div>
-            <button class="more-keywords"></button>
-        </div> -->
+            <input type="file" class="file-input" name="image" onchange="onImgInput(event)">
+        </div>
         <div class="main-container grid">
-            <img src="img/1.jpg" onclick="onSelecImg(1)">
-            <img src="img/2.jpg" onclick="onSelecImg(2)">
-            <img src="img/3.jpg" onclick="onSelecImg(3)">
-            <img src="img/4.jpg" onclick="onSelecImg(4)">
-            <img src="img/5.jpg" onclick="onSelecImg(5)">
-            <img src="img/6.jpg" onclick="onSelecImg(6)">
         </div>
     </div>
     <div class="meme-contaier main-layout grid">
@@ -43,43 +37,55 @@
             <canvas class="canvas" width="500" height="500" oninput="onDraw(event)"></canvas>
         </div>
         <div class="buttons-container grid">
-            <input class="txt" type="text" name="text-line" placeholder="text here" oninput="onDrawTxt(this.value)">
-            <button class="switch-line" onclick="onSwitchLine()"><img src="buttons-img/Forme_3.png"><img
-                    src="buttons-img/Forme_3_copie.png"></button>
-            <button class="add-line" onclick="onAddLine()"> <img src="buttons-img/+.png"></button>
-            <button class="delete" onclick="onDeleteLine()"><img src="buttons-img/Forme_4.png"></button>
-            <button class="font-size-plus center-buttons" onclick="onChangeFontSize(4)"><img
-                    src="buttons-img/A+.png"></button>
-            <button class="font-size-minus center-buttons" onclick="onChangeFontSize(-4)"><img
+            <input class="txt cursor" type="text" name="text-line" placeholder="text here"
+                oninput="onDrawTxt(this.value)">
+            <button class="switch-line cursor" onclick="onSwitchLine()"><img class="buttons-img"
+                    src="buttons-img/Forme_3.png"><img class="buttons-img" src="buttons-img/Forme_3_copie.png"></button>
+            <button class="add-line cursor" onclick="onAddLine()"> <img class="buttons-img"
+                    src="buttons-img/+.png"></button>
+            <button class="delete cursor" onclick="onDeleteLine()"><img class="buttons-img"
+                    src="buttons-img/Forme_4.png"></button>
+            <button class="font-size-plus center-buttons cursor" onclick="onChangeFontSize(4)"><img class="buttons-img"
+                    class="size" src="buttons-img/A+.png"></button>
+            <button class="font-size-minus center-buttons cursor" onclick="onChangeFontSize(-4)"><img class="size"
                     src="buttons-img/A-.png"></button>
-            <button class="start-alignment center-buttons grid-row" name="start" onclick="onChangeAlign(this)"><img
+            <button class="start-alignment center-buttons grid-row cursor " name="left"
+                onclick="onChangeAlign(this)"><img class="buttons-img"
                     src="buttons-img/Rectangle_4_copie_3.png"></button>
-            <button class="center-alignment center-buttons grid-row" name="center" onclick="onChangeAlign(this)"><img
+            <button class="center-alignment center-buttons grid-row cursor" name="center"
+                onclick="onChangeAlign(this)"><img class="buttons-img"
                     src="buttons-img/Rectangle_4_copie_4.png"></button>
-            <button class="end-alignment center-buttons grid-row" name="end" onclick="onChangeAlign(this)"><img
-                    src="buttons-img/Rectangle_4_copie_5.png"></button>
-            <select class="font-family center-buttons" name="font-family" onchange="onChangeFont(this.value)">
+            <button class="end-alignment center-buttons grid-row cursor" name="right" onclick="onChangeAlign(this)"><img
+                    class="buttons-img" src="buttons-img/Rectangle_4_copie_5.png"></button>
+            <select class="font-family center-buttons cursor" name="font-family" onchange="onChangeFont(this.value)">
                 <option value="impact">impact</option>
                 <option value="halvatica">halvatica</option>
             </select>
-            <button class="save center-buttons" onclick="onSaveMeme()">S</button>
-            <input class="color center-buttons" type="color" value="#000000" name="font-color"
+            <button class="stroke center-buttons cursor" onclick="onChangeStroke()">S</button>
+            <input class="color center-buttons cursor" type="color" value="#000000" name="font-color"
                 onchange="onChangeColor()">
-                <img class="img-color center-buttons" src="buttons-img/Forme_6.png">
+            <img class="img-color center-buttons cursor" src="buttons-img/Forme_6.png">
+        
             <!-- <button class="move-line" onclick="OnMoveLine(-3)">&#8593</button>
         <button class="move-line" onclick="OnMoveLine(3)">&#8595</button> -->
-            <div class="stickers" onclick="onAddSticker()">
+            <div class="stickers flex">
+                <img src="img/stickers/sticker1.png" onclick="onAddSticker(this)">
+                <img src="img/stickers/sticker2.png" onclick="onAddSticker(this)">
+                <img src="img/stickers/sticker3.png" onclick="onAddSticker(this)">
             </div>
-            <a href="#" class="download" onclick="downloadImg(this)" download="my-img.jpg"> <img src="buttons-img/Forme_8.png"> Download</a>
+            <a href="#" class="share cursor" onclick="onOploadImg(this)"><img src="buttons-img/share.png"></a>
+            <button class="save cursor" onclick="onSaveMeme()">Save</button>
+            <a href="#" class="download cursor" onclick="downloadImg(this)" download="my-img.jpg"> <img
+                    src="buttons-img/download.png"></a>
         </div>
     </div>
+    <div class="memes-page main-layout grid"></div>
     <footer>
         <div class="footer flex">
             <img class="logo" src="logo/LOGO.png">
-            <p> @Shany Pollack</p>
+            <p> &#169;Shany Pollack</p>
         </div>
     </footer>
-    <!-- <div class="border-box"></div> -->
     <script src="js/util.js"></script>
     <script src="js/storage-service.js"></script>
     <script src="js/meme-service.js"></script>

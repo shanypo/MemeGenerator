@@ -6,7 +6,6 @@ var gCurrImg;
 var gStartPos;
 var gMeme;
 var gCurrLine;
-var gSavesMemes;
 const gTouchEvs = ['touchstart', 'touchmove', 'touchend'];
 
 function onInitCanvas() {
@@ -30,10 +29,11 @@ function renderImg(img) {
 function renderCanvas() {
     clearCanvas();
     drawImg(gCurrImg);
+    drawSickers();
     drawLine();
 }
-function scaleToFit(img){
-var scale = Math.min(canvas.width / img.width, canvas.height / img.height);
+function scaleToFit(img) {
+    var scale = Math.min(canvas.width / img.width, canvas.height / img.height);
     var x = (canvas.width / 2) - (img.width / 2) * scale;
     var y = (canvas.height / 2) - (img.height / 2) * scale;
     ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
@@ -42,18 +42,8 @@ var scale = Math.min(canvas.width / img.width, canvas.height / img.height);
 
 function drawImg(imgUrl) {
     var img = new Image();
-    img.src = imgUrl;     
-    gCtx.drawImage(img, 0, 0, gCanvas.width, gCanvas.height);
-    // var gCanvas = gCtx.canvas;
-    // var hRatio = gCanvas.width / img.width;
-    // var vRatio = gCanvas.height / img.height;
-    // var ratio = Math.min(hRatio, vRatio);
-    // var centerShift_x = (gCanvas.width - img.width * ratio) / 2;
-    // var centerShift_y = (gCanvas.height - img.height * ratio) / 2;
-    // gCtx.clearRect(0, 0, gCanvas.width, gCanvas.height);
-    // gCtx.drawImage(img, 0, 0, img.width, img.height,
-    // centerShift_x, centerShift_y, img.width * ratio, img.height * ratio);    
-
+    img.src = imgUrl;
+    gCtx.drawImage(img, 0, 0, gCanvas.width, gCanvas.height);  
 }
 
 function onDrawTxt(txt) {
@@ -80,6 +70,14 @@ function drawLine() {
     });
 }
 
+function drawSickers() {
+    var meme = getMeme();
+    meme.stickers.forEach(sticker => {
+        const img = new Image();
+        img.src = sticker.src
+        gCtx.drawImage(img, sticker.x, sticker.y, sticker.size, sticker.size)
+    });
+}
 
 function clearCanvas() {
     gCtx.clearRect(0, 0, gCanvas.width, gCanvas.height);
@@ -97,7 +95,13 @@ function onChangeFontSize(diff) {
 }
 
 function onChangeAlign(alignment) {
-    changeParam('align', alignment.name)
+    if (alignment.name === 'left') {
+        setAlignPos(gCanvas.width / 4);
+    } else if (alignment.name === 'right') {
+        setAlignPos(gCanvas.width - 100)
+    } else if (alignment.name === 'center') {
+        setAlignPos(gCanvas.width / 2)
+    }
     renderCanvas();
 }
 
@@ -107,7 +111,6 @@ function onChangeFont(fontFamily) {
 }
 
 /******************************move************************************/
-
 
 function OnMoveLine(diff) {
     gCurrLine.pos.y += diff;
@@ -127,11 +130,11 @@ function addTouchListeners() {
 }
 
 function onDown(ev) {
-    const pos = getEvPos(ev)
+    const pos = getEvPos(ev);
     var txtWidth = gCtx.measureText(gCurrLine.txt).width;
     if (!isline(pos, txtWidth)) return;
     setLineDrag(true);
-    gStartPos = pos
+    gStartPos = pos;
     document.body.style.cursor = 'grabbing';
 }
 
@@ -169,12 +172,16 @@ function getEvPos(ev) {
     return pos;
 }
 
-
 /******************************lines************************************/
 
 function onAddLine() {
     cleanTxt();
-    var pos = { x: gCanvas.width / 2, y: 144 };
+    var meme = getMeme()
+    if (meme.selectedLineIdx >= 1) {
+        var pos = { x: gCanvas.width / 2, y: gCanvas.height / 2 };
+    } else {
+        var pos = { x: gCanvas.width / 2, y: 350 };
+    }
     document.querySelector('[name=text-line]').focus();
     addLine(pos);
     updateLine();
@@ -195,22 +202,33 @@ function onDeleteLine() {
     renderCanvas();
 }
 
-/******************************lines************************************/
-
+/******************************save***********************************/
 function onSaveMeme() {
-    gSavesMemes = saveMeme();
+    saveMeme();
+    renderSavedMems();
 }
 
-function onUloadImgFromStorage() {
-
-    if(!gSaveMemes || gSaveMemes.length === 0)return;
-    gSavesMemes.forEach((meme) => {
-        var meme = new Image();        
-        meme.src = uploadImgFromStorage();
-        var elMeme = document.querySelector('.memes-page');
-        elMeme.appendChild(meme);
+function renderSavedMems() {
+    var saveMemes = getSavedMems();
+    var strHtml = '';
+    saveMemes.forEach(function (meme) {
+        return strHtml += `<img src="${meme.canvasImg}" onclick="onSelecSaveImg('${meme.id}')">
+        <button class="delete-btn" onclick="onDelete('${meme.id}')">X</button>`
     });
-    
+    document.querySelector('.memes-page').innerHTML = strHtml;
+}
+
+function onSelecSaveImg(memeId) {
+    var meme = getMemeById(memeId);
+    document.querySelector('canvas').hidden = false;
+    document.querySelector('.meme-contaier').hidden = false;
+    var elBtn = document.querySelector('.buttons-container');
+    elBtn.style.display = 'grid';
+    document.querySelector('.meme-contaier').style.display = 'flex';
+    closeSavedMems();
+    var img = getSelecImg(meme.selectedImgId)
+    drawImg(img.url);
+    renderCanvas();
 }
 
 function downloadImg(elLink) {
@@ -218,7 +236,65 @@ function downloadImg(elLink) {
     elLink.href = imgContent;
 }
 
-function cleanTxt(){
+function cleanTxt() {
     document.querySelector('.txt').value = '';
+}
+
+function onDelete(memeId) {
+    deleteMeme(memeId);
+    renderSavedMems();
+
+}
+/**************************stickers******************************************/
+
+function onAddSticker(sticker) {
+    addSticker(sticker)
+    renderCanvas();
+}
+function getCanvasDimension() {
+    return { width: gCanvas.width, height: gCanvas.height };
+}
+
+function renderSticker(stickerId) {
+    var stickers = getSticker(stickerId);
+    var sticker = new Image();
+    sticker.src = stickers.url;
+    gCtx.drawImage(sticker, 0, 0, 30, 30);
+    renderCanvas();
+}
+
+
+/*******************************share********************************************/
+
+async function onOploadImg() {
+    // const imgDataUrl = gCanvas.toDataURL('image/jpeg');
+    // function onSuccess(uploadedImgUrl) {
+    //     const encodedUploadedImgUrl = encodeURIComponent(uploadedImgUrl)
+    //     document.querySelector('.share-container').innerHTML = `
+    //         <a class="btn" href="https://www.facebook.com/sharer/sharer.php?u=${encodedUploadedImgUrl}&t=${encodedUploadedImgUrl}"\
+    //         title="Share on Facebook" target="_blank" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=${uploadedImgUrl}&t=${uploadedImgUrl}');\
+    //         return false;">
+    //         Share on Facebook  
+    //         </a>`
+    // }
+    // doUploadImg(imgDataUrl, onSuccess);
+}
+
+function doUploadImg(imgDataUrl, onSuccess) {
+
+    const formData = new FormData();
+    formData.append('img', imgDataUrl)
+    fetch('//ca-upload.com/here/upload.php', {
+        method: 'POST',
+        body: formData
+    })
+        .then(res => res.text())
+        .then((url) => {
+            console.log('Got back live url:', url);
+            onSuccess(url)
+        })
+        .catch((err) => {
+            console.error(err)
+        })
 }
 
