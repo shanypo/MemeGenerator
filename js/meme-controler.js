@@ -176,7 +176,7 @@ function getEvPos(ev) {
 
 function onAddLine() {
     cleanTxt();
-    var meme = getMeme()
+    var meme = getMeme();
     if (meme.selectedLineIdx >= 1) {
         var pos = { x: gCanvas.width / 2, y: gCanvas.height / 2 };
     } else {
@@ -190,9 +190,11 @@ function onAddLine() {
 }
 
 function onSwitchLine() {
-    var idx = updateLine();
+    var idx = updateLine(); 
     document.querySelector('[name=text-line]').value = gMeme.lines[idx].txt;
     document.querySelector('[name=text-line]').focus();
+    gCurrLine = getLine();
+    renderCanvas();
 }
 
 function onDeleteLine() {
@@ -247,21 +249,21 @@ function onDelete(memeId) {
 }
 /**************************stickers******************************************/
 
-function onAddSticker(sticker) {
-    addSticker(sticker)
-    renderCanvas();
-}
+// function onAddSticker(sticker) {
+//     addSticker(sticker)
+//     renderCanvas();
+// }
 function getCanvasDimension() {
     return { width: gCanvas.width, height: gCanvas.height };
 }
 
-function renderSticker(stickerId) {
-    var stickers = getSticker(stickerId);
-    var sticker = new Image();
-    sticker.src = stickers.url;
-    gCtx.drawImage(sticker, 0, 0, 30, 30);
-    renderCanvas();
-}
+// function renderSticker(stickerId) {
+//     var stickers = getSticker(stickerId);
+//     var sticker = new Image();
+//     sticker.src = stickers.url;
+//     gCtx.drawImage(sticker, 0, 0, 30, 30);
+//     renderCanvas();
+// }
 
 
 /*******************************share********************************************/

@@ -5,8 +5,7 @@
 var gMeme;
 const KEY = 'memeDB';
 var gSaveMemes = {saveMeme:[]};
-var gStickers = [{id: 1, url:'img/stickers/sticker1.jpg'},{id: 2, url:`img/stickers/sticker2.jpg`},{id: 3, url:`img/stickers/sticker3.jpg`}]
-// createMeme();
+// var gStickers = [{id: 1, url:'img/stickers/sticker1.jpg'},{id: 2, url:`img/stickers/sticker2.jpg`},{id: 3, url:`img/stickers/sticker3.jpg`}]
 
 function createMemes(pos) {
     var gMeme = {
@@ -105,7 +104,6 @@ function addLine(pos, txt = '') {
 
 function updateLine() {
     return gMeme.selectedLineIdx >= gMeme.lines.length - 1 ? gMeme.selectedLineIdx = 0 : gMeme.selectedLineIdx++;
-
 }
 
 function deleteLine() {
@@ -135,9 +133,9 @@ function getSavedMems(){
     return gSaveMemes.saveMeme;
 }
 
-function addSticker(sticker){
-    gMeme.stickers.push({ src: sticker.src, x: getCanvasDimension().width / 2 , y: (getCanvasDimension().height / 2), size: 60 })
-}
+// function addSticker(sticker){
+//     gMeme.stickers.push({ src: sticker.src, x: getCanvasDimension().width / 2 , y: (getCanvasDimension().height / 2), size: 60 })
+// }
 
 function updateImgId(imgId){
     gMeme.selectedImgId = imgId;
