@@ -17,6 +17,8 @@ function onInitCanvas() {
     addMouseListeners();
     addTouchListeners();
     renderCanvas();
+    loadMeme();
+    renderSavedMems();
 }
 
 /******************************render************************************/
@@ -43,7 +45,7 @@ function scaleToFit(img) {
 function drawImg(imgUrl) {
     var img = new Image();
     img.src = imgUrl;
-    gCtx.drawImage(img, 0, 0, gCanvas.width, gCanvas.height);  
+    gCtx.drawImage(img, 0, 0, gCanvas.width, gCanvas.height);
 }
 
 function onDrawTxt(txt) {
@@ -190,7 +192,7 @@ function onAddLine() {
 }
 
 function onSwitchLine() {
-    var idx = updateLine(); 
+    var idx = updateLine();
     document.querySelector('[name=text-line]').value = gMeme.lines[idx].txt;
     document.querySelector('[name=text-line]').focus();
     gCurrLine = getLine();
@@ -214,8 +216,8 @@ function renderSavedMems() {
     var saveMemes = getSavedMems();
     var strHtml = '';
     saveMemes.forEach(function (meme) {
-        return strHtml += `<img src="${meme.canvasImg}" onclick="onSelecSaveImg('${meme.id}')">
-        <button class="delete-btn" onclick="onDelete('${meme.id}')">X</button>`
+        return strHtml += `<div><img src="${meme.canvasImg}" onclick="onSelecSaveImg('${meme.id}')">
+        <button class="delete-btn" onclick="onDelete('${meme.id}')">X</button></div>`
     });
     document.querySelector('.memes-page').innerHTML = strHtml;
 }
@@ -268,18 +270,29 @@ function getCanvasDimension() {
 
 /*******************************share********************************************/
 
-async function onOploadImg() {
-    // const imgDataUrl = gCanvas.toDataURL('image/jpeg');
-    // function onSuccess(uploadedImgUrl) {
-    //     const encodedUploadedImgUrl = encodeURIComponent(uploadedImgUrl)
-    //     document.querySelector('.share-container').innerHTML = `
-    //         <a class="btn" href="https://www.facebook.com/sharer/sharer.php?u=${encodedUploadedImgUrl}&t=${encodedUploadedImgUrl}"\
-    //         title="Share on Facebook" target="_blank" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=${uploadedImgUrl}&t=${uploadedImgUrl}');\
-    //         return false;">
-    //         Share on Facebook  
-    //         </a>`
-    // }
-    // doUploadImg(imgDataUrl, onSuccess);
+function onOploadImg() {
+    renderCanvas()
+    var memeToShare = gCanvas.toDataURL('image/jpeg')
+    shareImage(memeToShare)
+}
+
+async function shareImage(imgCanvasToShare) {
+    const response = await fetch(imgCanvasToShare);
+    const blob = await response.blob();
+    const filesArray = [
+        new File(
+            [blob],
+            'meme.jpg',
+            {
+                type: "image/jpeg",
+                lastModified: new Date().getTime()
+            }
+        )
+    ];
+    const shareData = {
+        files: filesArray,
+    };
+    navigator.share(shareData);
 }
 
 function doUploadImg(imgDataUrl, onSuccess) {

@@ -10,10 +10,10 @@ function onInit() {
 function renderGallary() {
     var gallary = getImgs();
     var strHtml = `<label for="file-input">
-    <div class="uplaod-img">Upload your own photo</div>
+    <div class="uplaod-img  cursor">Upload your own photo</div>
     </label>
     <input type="file" class="file-input" id="file-input" onchange="onImgInput(event)">`
-    gallary.forEach(function (img, idx) {
+    gallary.reverse().forEach(function (img, idx) {
         return strHtml += `<img src="${img.url}" onclick="onSelecImg(${idx + 1})">`
     });
     document.querySelector('.main-container').innerHTML = strHtml;
