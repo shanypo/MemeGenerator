@@ -283,6 +283,7 @@ canvas{
     font-family: poppines-medium;
     font-size: 1.1rem;
     text-transform: uppercase;
+    outline: unset;
 }
 
 .buttons-container .switch-line{
